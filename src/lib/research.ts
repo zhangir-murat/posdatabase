@@ -13,8 +13,8 @@ export function filterMerchants(data: Merchant[], f: Filters) {
       (!f.category || m.category === f.category) &&
       (!f.provider || m.provider === f.provider) &&
       (!f.status || m.verification_status === f.status) &&
-      (!f.from || m.observation_date >= f.from) &&
-      (!f.to || m.observation_date <= f.to),
+      (!f.from || (!!m.observation_date && m.observation_date >= f.from)) &&
+      (!f.to || (!!m.observation_date && m.observation_date <= f.to)),
   );
 }
 export function distribution(data: Merchant[], field: keyof Merchant) {
@@ -44,7 +44,7 @@ export function validateMerchant(m: Merchant) {
   )
     return "Coordinates must be within the NYC bounding envelope. Borough boundaries still require field verification.";
   if (
-    !m.observation_date ||
+    m.observation_date &&
     m.observation_date >
       new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" })
   )
@@ -67,6 +67,7 @@ export function csv(data: Merchant[]) {
     "category",
     "provider",
     "hardware",
+    "gateway",
     "verification_status",
     "observation_date",
     "evidence_method",

@@ -7,7 +7,7 @@ type Observation = {
   provider: string;
   hardware: string;
   verification_status: string;
-  observation_date: string;
+  observation_date: string | null;
   notes: string;
   evidence_method: string;
 };
@@ -23,7 +23,7 @@ export default function MerchantDetail({
   const [history, setHistory] = useState<Observation[]>([]);
   const [error, setError] = useState("");
   useEffect(() => {
-    if (m.is_demo) {
+    if (m.is_demo || m.is_seed) {
       setHistory([{ ...m, id: m.id }]);
       return;
     }
@@ -32,7 +32,7 @@ export default function MerchantDetail({
       ?.from("pos_observations")
       .select("*")
       .eq("merchant_id", m.id)
-      .order("observation_date", { ascending: false })
+      .order("observation_date", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
       .then(({ data, error }) => {
         if (active) {
@@ -73,6 +73,12 @@ export default function MerchantDetail({
           Illustrative record · not a real business observation
         </p>
       )}
+      {m.is_seed && (
+        <p className="info-box">
+          Researcher-reported observation. Date unknown. Approximate address
+          coordinates; entrance not verified.
+        </p>
+      )}
       <div className="detail-pos">
         <span className="eyebrow">POS SOFTWARE</span>
         <h2>
@@ -85,7 +91,9 @@ export default function MerchantDetail({
         <dt>Category</dt>
         <dd>{m.category}</dd>
         <dt>Last observed</dt>
-        <dd>{m.observation_date}</dd>
+        <dd>{m.observation_date || "Not supplied"}</dd>
+        <dt>Payment gateway</dt>
+        <dd>{m.gateway || "Unknown"}</dd>
         <dt>Evidence</dt>
         <dd>{m.evidence_method}</dd>
         <dt>Coordinates</dt>
@@ -116,7 +124,9 @@ export default function MerchantDetail({
         {error && <p className="error-box">{error}</p>}
         {history.map((o) => (
           <div key={o.id}>
-            <span className="mono tiny">{o.observation_date}</span>
+            <span className="mono tiny">
+              {o.observation_date || "Date not supplied"}
+            </span>
             <strong>
               {o.provider}{" "}
               <span className="muted small">· {o.verification_status}</span>
@@ -128,7 +138,7 @@ export default function MerchantDetail({
           </div>
         ))}
       </div>
-      {!m.is_demo && (
+      {!m.is_demo && !m.is_seed && (
         <button className="primary full" onClick={onEdit}>
           <ClipboardPen size={16} />
           Update & add observation

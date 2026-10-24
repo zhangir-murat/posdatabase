@@ -19,7 +19,20 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The initial 24 records in `src/data/demo.ts` are **entirely synthetic illustrative examples**. Business names, locations, dates, hardware and providers are not firsthand findings. They are bundled with the frontend, not inserted in the research database. No real merchant data was supplied with the brief. The research database starts empty. Exported illustrative rows have `is_demo=true` and filenames marked illustrative.
+The opening **Roosevelt Island** dataset contains two real reports supplied by the researcher:
+
+| Merchant | POS software | Terminal hardware | Payment gateway |
+|---|---|---|---|
+| Café@Cornell | Unknown | Ingenico | FreedomPay |
+| Wholesome Factory | Clover | Unknown | Unknown |
+
+Observation dates were not supplied and remain blank (SQL NULL), never substituted with the report-entry date. Café@Cornell's POS status is Unverified because neither hardware nor gateway identifies its POS software. Wholesome's Clover entry is recorded as a researcher-reported identification; no terminal model is inferred.
+
+Business addresses were checked against Cornell sources. WGS 84 coordinates came from NYC Planning GeoSearch's address points (nycpad IDs 181837 and 181788, both confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
+
+These two opening records are a read-only reference dataset bundled with the app. Select **Sign in to save to my database**, or **Save to my database** when signed in, to import them atomically into your private Supabase dataset. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+
+The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 
 Select **My research**, create a researcher account, confirm the Supabase verification email, then return to the app and sign in. The verification link may redirect to Supabase's default localhost site URL after verification; return manually to the deployed Atlas. Set Authentication → URL Configuration → Site URL to the standalone Atlas deployment origin if maintaining the Supabase project yourself. The app uses email/password and does not depend on an OAuth redirect. Each signed-in researcher owns an isolated dataset. There is no shared organization dataset or team membership model in Phase 1.
 
@@ -30,7 +43,7 @@ Select **My research**, create a researcher account, confirm the Supabase verifi
 - Merchant database: sortable columns, pagination, record details and CSV export.
 - Research analytics: provider counts/shares, verification coverage, categories, and neighborhood composition. Unknown POS is included in the denominator. All records, including unmapped ones, enter chart counts.
 - Add merchant: authenticated, validated merchant + initial observation are saved atomically. Duplicate owner/name/address/ZIP combinations are rejected. Coordinates can be absent but must be paired when supplied.
-- Update & add observation: updates merchant location/category metadata and appends a new POS observation. Previous observations are immutable through the client. The latest observation date wins, then creation timestamp and UUID. Historical merchant address changes are not versioned in Phase 1.
+- Update & add observation: updates merchant location/category metadata and appends a new POS observation. Previous observations are immutable through the client. Known observation dates sort newest first; undated reports sort last, then by creation timestamp and UUID. Historical merchant address changes are not versioned in Phase 1.
 
 Each physical location is counted once, regardless of number of observations. There is currently one software provider per observation; multi-provider installations should use Other and explain details in notes until a future junction model is introduced.
 
@@ -40,7 +53,7 @@ Each physical location is counted once, regardless of number of observations. Th
 
 - `merchants`: UUID, account owner, location/address, borough/neighborhood, category, nullable coordinate pair, generated geometry(Point,4326), GiST spatial index.
 - `pos_providers`: controlled provider lookup.
-- `pos_observations`: merchant + owner composite FK, software/hardware separately, verification status, date, method and notes. Latest-observation index.
+- `pos_observations`: merchant + owner composite FK, software/hardware/gateway separately, verification status, date, method and notes. Latest-observation index.
 - `merchant_current`: security-invoker view selecting the latest dated observation for each visible merchant.
 - `save_merchant_observation(jsonb)`: security-invoker atomic RPC. Ownership is derived from auth.uid(), never payload ownership fields. Constraints are enforced in Postgres as well as the UI.
 - `merchants_in_bbox(...)`: security-invoker viewport query over indexed WGS 84 geometry.
@@ -49,7 +62,7 @@ All eight public tables have RLS enabled. Anonymous users can read only the cont
 
 The current frontend pages records from the current-state view in batches of 1,000, then applies shared filters client-side. This supports the intended thousands of records. Viewport RPC and spatial indexes are provided for a later server-filtering migration if the dataset grows well beyond that. Concurrent user requests are isolated by RLS. No realtime subscription is included; use Refresh after updates from another device.
 
-Location validation is a **NYC bounding envelope**, not a point-in-NYC/borough polygon check; an offshore or non-NYC point can still lie in the envelope. Address geocoding and exact borough-boundary validation are not implemented. Enter coordinates from verified field notes/maps. Validation also checks ZIP format, required merchant identity, observation dates and verified/unknown contradictions.
+Location validation is a **NYC bounding envelope**, not a point-in-NYC/borough polygon check; an offshore or non-NYC point can still lie in the envelope. Address geocoding and exact borough-boundary validation are not implemented. Enter coordinates from verified field notes/maps. Validation also checks ZIP format, required merchant identity, future observation dates and verified/unknown contradictions; unknown dates are permitted and excluded when a date filter is active.
 
 ## Phase 2 infrastructure only
 

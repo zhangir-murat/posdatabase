@@ -10,7 +10,12 @@ export async function fetchMerchants(): Promise<Merchant[]> {
       .order("id")
       .range(offset, offset + 999);
     if (error) throw error;
-    rows.push(...(data || []));
+    rows.push(
+      ...(data || []).map((row) => ({
+        ...row,
+        observation_date: row.observation_date || "",
+      })),
+    );
     if (!data || data.length < 1000) break;
   }
   return rows;
@@ -22,4 +27,11 @@ export async function saveMerchant(m: Merchant, isNew: boolean) {
   });
   if (error) throw error;
   return data;
+}
+
+export async function importRooseveltIsland() {
+  if (!supabase) throw Error("Database is not configured.");
+  const { data, error } = await supabase.rpc("import_roosevelt_island");
+  if (error) throw error;
+  return data as number;
 }

@@ -36,6 +36,7 @@ import MerchantForm from "./components/MerchantForm";
 import AuthModal from "./components/AuthModal";
 import MerchantDetail from "./components/MerchantDetail";
 import { demoMerchants } from "./data/demo";
+import { rooseveltIslandMerchants } from "./data/rooseveltIsland";
 import { useFilters } from "./state/useFilters";
 import {
   boroughs,
@@ -46,7 +47,11 @@ import {
   type Filters,
 } from "./lib/types";
 import { distribution, exportCsv } from "./lib/research";
-import { fetchMerchants, saveMerchant } from "./lib/data";
+import {
+  fetchMerchants,
+  saveMerchant,
+  importRooseveltIsland,
+} from "./lib/data";
 import { supabase } from "./lib/supabase";
 const nav = [
   { id: "atlas", name: "Merchant atlas", icon: Map },
@@ -55,11 +60,14 @@ const nav = [
 ];
 export default function App() {
   const [view, setView] = useState("atlas");
-  const [dataset, setDataset] = useState<"demo" | "research">("demo");
+  const [dataset, setDataset] = useState<"field" | "demo" | "research">(
+    "field",
+  );
   const [session, setSession] = useState<Session | null>(null);
   const [research, setResearch] = useState<Merchant[]>([]);
   const [auth, setAuth] = useState(false);
   const [form, setForm] = useState(false);
+  const [pendingImport, setPendingImport] = useState(false);
   const [editing, setEditing] = useState<Merchant | undefined>();
   const [selected, setSelected] = useState<Merchant | null>(null);
   const [loading, setLoading] = useState(false);
@@ -68,7 +76,12 @@ export default function App() {
   const [advanced, setAdvanced] = useState(false);
   const [focus, setFocus] = useState("island");
   const [mapVisible, setMapVisible] = useState(true);
-  const data = dataset === "demo" ? demoMerchants : research;
+  const data =
+    dataset === "demo"
+      ? demoMerchants
+      : dataset === "field"
+        ? rooseveltIslandMerchants
+        : research;
   const { filters, filtered, setFilter, reset, active } = useFilters(data);
   useEffect(() => {
     supabase?.auth.getSession().then(({ data }) => setSession(data.session));
@@ -91,7 +104,12 @@ export default function App() {
     }
   }
   useEffect(() => {
-    if (session) void load();
+    if (session) {
+      if (pendingImport) {
+        setPendingImport(false);
+        void importFieldReports();
+      } else void load();
+    }
   }, [session?.user.id]);
   useEffect(() => {
     const close = (e: KeyboardEvent) => {
@@ -140,7 +158,7 @@ export default function App() {
     setEditing(undefined);
     setForm(true);
   }
-  function changeDataset(s: "demo" | "research") {
+  function changeDataset(s: "field" | "demo" | "research") {
     setDataset(s);
     reset();
     setSelected(null);
@@ -152,6 +170,30 @@ export default function App() {
     setDataset("research");
     setSelected(rows.find((x) => x.id === id) || null);
     setToast("Observation saved to your research database.");
+  }
+  async function importFieldReports() {
+    if (!session) {
+      setPendingImport(true);
+      setAuth(true);
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const count = await importRooseveltIsland();
+      setResearch(await fetchMerchants());
+      setDataset("research");
+      reset();
+      setToast(
+        count
+          ? `${count} Roosevelt Island observations saved.`
+          : "These merchants already exist in your database; existing records were preserved.",
+      );
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
   }
   const selectFilter = (key: keyof Filters, label: string, opts: string[]) => (
     <label className={`filter-select ${filters[key] ? "has-value" : ""}`}>
@@ -289,7 +331,11 @@ export default function App() {
           <div className="topbar-actions">
             <span className={`connection ${session ? "connected" : ""}`}>
               <i />
-              {session ? "Research database connected" : "Illustrative dataset"}
+              {session
+                ? "Research database connected"
+                : dataset === "field"
+                  ? "Roosevelt Island field reports"
+                  : "Illustrative dataset"}
             </span>
             <button
               className="icon-button"
@@ -339,6 +385,12 @@ export default function App() {
               <div className="dataset-bar">
                 <div className="dataset-switch">
                   <button
+                    className={dataset === "field" ? "active" : ""}
+                    onClick={() => changeDataset("field")}
+                  >
+                    Roosevelt Island<span>2</span>
+                  </button>
+                  <button
                     className={dataset === "demo" ? "active" : ""}
                     onClick={() => changeDataset("demo")}
                   >
@@ -356,6 +408,21 @@ export default function App() {
                     <>
                       Synthetic examples for exploring the workspace.{" "}
                       <b>Not field observations.</b>
+                    </>
+                  ) : dataset === "field" ? (
+                    <>
+                      Two real researcher reports. Dates unknown; map locations
+                      approximate.{" "}
+                      <button
+                        className="inline-link"
+                        disabled={loading}
+                        onClick={importFieldReports}
+                      >
+                        {session
+                          ? "Save to my database"
+                          : "Sign in to save to my database"}
+                        <ArrowUpRight size={12} />
+                      </button>
                     </>
                   ) : session ? (
                     <>Your private, saved merchant observations.</>
@@ -583,7 +650,7 @@ export default function App() {
               </div>
               {error && (
                 <div role="alert" className="error-box">
-                  Could not load research records: {error}{" "}
+                  Research operation failed: {error}{" "}
                   <button className="inline-link" onClick={load}>
                     Retry
                   </button>
@@ -693,10 +760,12 @@ export default function App() {
                       <span className="green-dot" />{" "}
                       {dataset === "demo"
                         ? "ILLUSTRATIVE RESEARCH ENVIRONMENT"
-                        : "PRIVATE RESEARCH WORKSPACE"}
+                        : dataset === "field"
+                          ? "RESEARCHER-REPORTED FIELD OBSERVATIONS"
+                          : "PRIVATE RESEARCH WORKSPACE"}
                     </span>
                     <span>
-                      Coordinates in WGS 84 · Latest observation per location
+                      Coordinates in WGS 84 · Address points are approximate
                     </span>
                   </div>
                   <div className="insight-strip">

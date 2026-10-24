@@ -151,14 +151,21 @@ export default function MerchantForm({
             <div className="form-grid">
               {select("POS software provider", "provider", providers)}
               {input("Terminal hardware brand", "hardware")}
+              {input("Payment gateway (if known)", "gateway")}
               {select("Verification status", "verification_status", [
                 "Verified",
                 "Inferred",
                 "Unverified",
               ])}
-              {input("Observation date", "observation_date", true, "date")}
+              {input(
+                "Observation date (leave blank if unknown)",
+                "observation_date",
+                false,
+                "date",
+              )}
               {select("Evidence method", "evidence_method", [
                 "Visual inspection",
+                "Researcher-reported field observation",
                 "Staff confirmation",
                 "Receipt",
                 "Public source",

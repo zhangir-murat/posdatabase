@@ -18,6 +18,7 @@ export interface Merchant {
   category: string;
   provider: string;
   hardware: string;
+  gateway?: string;
   verification_status: Status;
   observation_date: string;
   notes: string;
@@ -25,6 +26,7 @@ export interface Merchant {
   observation_id?: string;
   observation_count?: number;
   is_demo?: boolean;
+  is_seed?: boolean;
 }
 export type Filters = {
   search: string;
