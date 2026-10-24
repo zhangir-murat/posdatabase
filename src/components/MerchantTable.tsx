@@ -48,6 +48,7 @@ export default function MerchantTable({
                 ["Business / location", "business_name"],
                 ["Category", "category"],
                 ["POS provider", "provider"],
+                ["Hardware / platform", "hardware"],
                 ["Verification", "verification_status"],
                 ["Observed", "observation_date"],
               ].map(([t, k]) => (
@@ -82,6 +83,18 @@ export default function MerchantTable({
                     <i style={{ background: colors[m.provider] }} />
                     {m.provider}
                   </span>
+                </td>
+                <td>
+                  <strong>
+                    {m.hardware !== "Unknown"
+                      ? m.hardware
+                      : m.payment_platform && m.payment_platform !== "Unknown"
+                        ? m.payment_platform
+                        : "Unknown"}
+                  </strong>
+                  {m.gateway && m.gateway !== "Unknown" && (
+                    <span>Gateway: {m.gateway}</span>
+                  )}
                 </td>
                 <td>
                   <span

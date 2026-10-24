@@ -36,7 +36,7 @@ import MerchantForm from "./components/MerchantForm";
 import AuthModal from "./components/AuthModal";
 import MerchantDetail from "./components/MerchantDetail";
 import { demoMerchants } from "./data/demo";
-import { rooseveltIslandMerchants } from "./data/rooseveltIsland";
+import { fieldReports } from "./data/fieldReports";
 import { useFilters } from "./state/useFilters";
 import {
   boroughs,
@@ -50,7 +50,7 @@ import { distribution, exportCsv } from "./lib/research";
 import {
   fetchMerchants,
   saveMerchant,
-  importRooseveltIsland,
+  importFieldReports as importSavedFieldReports,
 } from "./lib/data";
 import { supabase } from "./lib/supabase";
 const nav = [
@@ -74,13 +74,13 @@ export default function App() {
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
   const [advanced, setAdvanced] = useState(false);
-  const [focus, setFocus] = useState("island");
+  const [focus, setFocus] = useState("sample");
   const [mapVisible, setMapVisible] = useState(true);
   const data =
     dataset === "demo"
       ? demoMerchants
       : dataset === "field"
-        ? rooseveltIslandMerchants
+        ? fieldReports
         : research;
   const { filters, filtered, setFilter, reset, active } = useFilters(data);
   useEffect(() => {
@@ -180,13 +180,13 @@ export default function App() {
     setLoading(true);
     setError("");
     try {
-      const count = await importRooseveltIsland();
+      const count = await importSavedFieldReports();
       setResearch(await fetchMerchants());
       setDataset("research");
       reset();
       setToast(
         count
-          ? `${count} Roosevelt Island observations saved.`
+          ? `${count} NYC field observations saved.`
           : "These merchants already exist in your database; existing records were preserved.",
       );
     } catch (e) {
@@ -334,7 +334,7 @@ export default function App() {
               {session
                 ? "Research database connected"
                 : dataset === "field"
-                  ? "Roosevelt Island field reports"
+                  ? "NYC field reports"
                   : "Illustrative dataset"}
             </span>
             <button
@@ -388,7 +388,7 @@ export default function App() {
                     className={dataset === "field" ? "active" : ""}
                     onClick={() => changeDataset("field")}
                   >
-                    Roosevelt Island<span>2</span>
+                    Field reports<span>{fieldReports.length}</span>
                   </button>
                   <button
                     className={dataset === "demo" ? "active" : ""}
@@ -411,8 +411,8 @@ export default function App() {
                     </>
                   ) : dataset === "field" ? (
                     <>
-                      Two real researcher reports. Dates unknown; map locations
-                      approximate.{" "}
+                      {fieldReports.length} real researcher reports. Dates
+                      unknown; map locations approximate.{" "}
                       <button
                         className="inline-link"
                         disabled={loading}
@@ -622,6 +622,12 @@ export default function App() {
                   {view === "atlas" && (
                     <>
                       <div className="segmented">
+                        <button
+                          className={focus === "sample" ? "active" : ""}
+                          onClick={() => setFocus("sample")}
+                        >
+                          Sample
+                        </button>
                         <button
                           className={focus === "island" ? "active" : ""}
                           onClick={() => setFocus("island")}

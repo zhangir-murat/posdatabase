@@ -19,6 +19,7 @@ export interface Merchant {
   provider: string;
   hardware: string;
   gateway?: string;
+  payment_platform?: string;
   verification_status: Status;
   observation_date: string;
   notes: string;

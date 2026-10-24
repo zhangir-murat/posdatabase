@@ -152,6 +152,10 @@ export default function MerchantForm({
               {select("POS software provider", "provider", providers)}
               {input("Terminal hardware brand", "hardware")}
               {input("Payment gateway (if known)", "gateway")}
+              {input(
+                "Reported payment platform (if role unclear)",
+                "payment_platform",
+              )}
               {select("Verification status", "verification_status", [
                 "Verified",
                 "Inferred",

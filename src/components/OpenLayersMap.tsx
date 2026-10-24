@@ -148,15 +148,17 @@ export default function OpenLayersMap({
   }, [merchants]);
   useEffect(() => {
     if (selected?.latitude != null && selected.longitude != null)
-      map.current
-        ?.getView()
-        .animate({
-          center: fromLonLat([selected.longitude, selected.latitude]),
-          zoom: 16,
-          duration: 650,
-        });
+      map.current?.getView().animate({
+        center: fromLonLat([selected.longitude, selected.latitude]),
+        zoom: 16,
+        duration: 650,
+      });
   }, [selected]);
   useEffect(() => {
+    if (focus === "sample") {
+      fit();
+      return;
+    }
     if (focus === "nyc")
       map.current
         ?.getView()
@@ -169,13 +171,11 @@ export default function OpenLayersMap({
           { padding: [30, 30, 30, 30], duration: 700 },
         );
     else
-      map.current
-        ?.getView()
-        .animate({
-          center: fromLonLat([-73.9537, 40.7619]),
-          zoom: 14.45,
-          duration: 700,
-        });
+      map.current?.getView().animate({
+        center: fromLonLat([-73.9537, 40.7619]),
+        zoom: 14.45,
+        duration: 700,
+      });
   }, [focus]);
   function fit() {
     const extent = source.current.getExtent();
@@ -201,7 +201,11 @@ export default function OpenLayersMap({
         <div className="map-location">
           <span className="green-dot" />
           NEW YORK CITY <span>/</span>
-          {focus === "nyc" ? "ALL BOROUGHS" : "ROOSEVELT ISLAND"}
+          {focus === "nyc"
+            ? "ALL BOROUGHS"
+            : focus === "sample"
+              ? "RESEARCH SAMPLE"
+              : "ROOSEVELT ISLAND"}
         </div>
       </div>
       <div className="map-bottom">
@@ -212,13 +216,11 @@ export default function OpenLayersMap({
         <button
           title="Center Roosevelt Island"
           onClick={() =>
-            map.current
-              ?.getView()
-              .animate({
-                center: fromLonLat([-73.9505, 40.7625]),
-                zoom: 15,
-                duration: 600,
-              })
+            map.current?.getView().animate({
+              center: fromLonLat([-73.9505, 40.7625]),
+              zoom: 15,
+              duration: 600,
+            })
           }
         >
           <LocateFixed size={15} />

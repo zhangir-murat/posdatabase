@@ -172,6 +172,10 @@ export default function AtlasMap({
       });
   }, [selected]);
   useEffect(() => {
+    if (focus === "sample") {
+      fit();
+      return;
+    }
     if (focus === "nyc")
       map.current?.fitBounds(
         [
@@ -224,7 +228,11 @@ export default function AtlasMap({
         <div className="map-location">
           <span className="green-dot" />
           NEW YORK CITY <span>/</span>{" "}
-          {focus === "nyc" ? "ALL BOROUGHS" : "ROOSEVELT ISLAND"}
+          {focus === "nyc"
+            ? "ALL BOROUGHS"
+            : focus === "sample"
+              ? "RESEARCH SAMPLE"
+              : "ROOSEVELT ISLAND"}
         </div>
       </div>
       <div className="map-bottom">

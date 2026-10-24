@@ -35,3 +35,10 @@ export async function importRooseveltIsland() {
   if (error) throw error;
   return data as number;
 }
+
+export async function importFieldReports() {
+  if (!supabase) throw Error("Database is not configured.");
+  const { data, error } = await supabase.rpc("import_field_reports");
+  if (error) throw error;
+  return data as number;
+}

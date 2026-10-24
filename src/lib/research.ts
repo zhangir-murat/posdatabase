@@ -68,6 +68,7 @@ export function csv(data: Merchant[]) {
     "provider",
     "hardware",
     "gateway",
+    "payment_platform",
     "verification_status",
     "observation_date",
     "evidence_method",

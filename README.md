@@ -19,18 +19,33 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The opening **Roosevelt Island** dataset contains two real reports supplied by the researcher:
+The opening **Field reports** dataset contains 10 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo and Rose Hill. The original two reports remain:
 
 | Merchant | POS software | Terminal hardware | Payment gateway |
 |---|---|---|---|
 | Café@Cornell | Unknown | Ingenico | FreedomPay |
 | Wholesome Factory | Clover | Unknown | Unknown |
 
+Additional observations:
+
+| Merchant / branch | POS software | Hardware | Reported payment platform |
+|---|---|---|---|
+| Trader Joe’s — Sutton Place / Bridgemarket | Unknown | Verifone | Unknown |
+| Piccolo Trattoria — Roosevelt Island | Unknown | PAX S300 | Unknown |
+| il laboratorio del gelato — Upper East Side | Square | Unknown | Unknown |
+| Gelateria Gentile — Nolita | Toast | Unknown | Unknown |
+| La Cabra — SoHo | Square | Unknown | Unknown |
+| LaVista Pizza — 2nd Avenue | Unknown | Unknown | Valor PayTech |
+| bb.q Chicken — Rose Hill | Toast | Unknown | Unknown |
+| Foodtown — Roosevelt Island | Unknown | Verifone | Unknown |
+
+Gentile’s Nolita branch was explicitly confirmed by the researcher. LaVista was described as UES and matched to its business-listed East Side location at 1099 2nd Avenue (grouped under Sutton Place). Valor PayTech remains a reported platform brand: the exact hardware, gateway product, and POS software are unresolved. No chain-wide claims are made. Provider analytics remain POS-specific and retain the five unknown POS records in their denominator. Hardware/platform information is visible in a separate table column and record details; CSV exports preserve it.
+
 Observation dates were not supplied and remain blank (SQL NULL), never substituted with the report-entry date. Café@Cornell's POS status is Unverified because neither hardware nor gateway identifies its POS software. Wholesome's Clover entry is recorded as a researcher-reported identification; no terminal model is inferred.
 
-Business addresses were checked against Cornell sources. WGS 84 coordinates came from NYC Planning GeoSearch's address points (nycpad IDs 181837 and 181788, both confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
+Business addresses were checked against primary business sources or official directories. WGS 84 coordinates came from NYC Planning GeoSearch's address points (per-record nycpad IDs recorded in notes; confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
 
-These two opening records are a read-only reference dataset bundled with the app. Select **Sign in to save to my database**, or **Save to my database** when signed in, to import them atomically into your private Supabase dataset. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+All 10 opening records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 10 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the eight additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
 
 The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 
@@ -53,7 +68,7 @@ Each physical location is counted once, regardless of number of observations. Th
 
 - `merchants`: UUID, account owner, location/address, borough/neighborhood, category, nullable coordinate pair, generated geometry(Point,4326), GiST spatial index.
 - `pos_providers`: controlled provider lookup.
-- `pos_observations`: merchant + owner composite FK, software/hardware/gateway separately, verification status, date, method and notes. Latest-observation index.
+- `pos_observations`: merchant + owner composite FK, software/hardware/gateway/reported payment platform separately, verification status, date, method and notes. Latest-observation index.
 - `merchant_current`: security-invoker view selecting the latest dated observation for each visible merchant.
 - `save_merchant_observation(jsonb)`: security-invoker atomic RPC. Ownership is derived from auth.uid(), never payload ownership fields. Constraints are enforced in Postgres as well as the UI.
 - `merchants_in_bbox(...)`: security-invoker viewport query over indexed WGS 84 geometry.

@@ -92,6 +92,8 @@ export default function MerchantDetail({
         <dd>{m.category}</dd>
         <dt>Last observed</dt>
         <dd>{m.observation_date || "Not supplied"}</dd>
+        <dt>Reported payment platform</dt>
+        <dd>{m.payment_platform || "Unknown"}</dd>
         <dt>Payment gateway</dt>
         <dd>{m.gateway || "Unknown"}</dd>
         <dt>Evidence</dt>
