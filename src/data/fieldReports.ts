@@ -309,6 +309,29 @@ const additionalReports = [
     "verification_status": "Unverified",
     "notes": "Researcher reported: charles thyrwitt times square - adyen on verifone hardware. Business spelling normalized to Charles Tyrwhitt. Adyen is retained as the reported payment-platform/processor brand and Verifone as terminal hardware. This does not establish the merchant’s POS software, gateway product or terminal model. Branch-specific report only. Observation date was not supplied. Address source: https://www.timessquarenyc.org/retail/charles-tyrwhitt. Coordinates: NYC Planning GeoSearch nycpad 111860, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
 },
+{
+    "city": "New York",
+    "borough": "Queens",
+    "neighborhood": "Long Island City",
+    "zip_code": "11101",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "NYC-016",
+    "business_name": "Hana Gelateria — Long Island City",
+    "street_address": "27-20 42nd Road",
+    "latitude": 40.749,
+    "longitude": -73.94015,
+    "category": "Café & bakery",
+    "provider": "Chowbus",
+    "hardware": "Unknown",
+    "payment_platform": "Unknown",
+    "gateway": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: hana gelateria - chowbus. Chowbus is recorded as the researcher-reported POS provider; no inference is made from online ordering or delivery listings. Terminal hardware, gateway, payment processor and observation date were not supplied. Address corroborated by https://www.theinfatuation.com/new-york/reviews/hana-gelateria and https://www.ubereats.com/store/hana-gelateria/cqq2l0MJVkWriy4PdxUFFQ. Coordinates: NYC Planning GeoSearch nycpad 1829581, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,

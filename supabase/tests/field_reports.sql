@@ -4,10 +4,10 @@ do $$ declare uid uuid:=gen_random_uuid();begin insert into auth.users(id) value
 set local role authenticated;
 do $$ begin
 if public.import_roosevelt_island()<>2 then raise exception 'legacy import failed';end if;
-if public.import_field_reports()<>13 then raise exception 'incremental thirteen import failed';end if;
+if public.import_field_reports()<>14 then raise exception 'incremental fourteen import failed';end if;
 if public.import_field_reports()<>0 then raise exception 'duplicate import';end if;
-if (select count(*) from public.merchant_current)<>15 then raise exception 'expected fifteen records';end if;
-if (select count(*) from public.pos_observations)<>15 then raise exception 'unexpected observation duplication';end if;
+if (select count(*) from public.merchant_current)<>16 then raise exception 'expected sixteen records';end if;
+if (select count(*) from public.pos_observations)<>16 then raise exception 'unexpected observation duplication';end if;
 if (select count(*) from public.merchant_current where provider='Unknown')<>7 then raise exception 'POS brand conflation';end if;
 if not exists(select 1 from public.merchant_current where business_name='LaVista Pizza — 2nd Avenue' and provider='Unknown' and payment_platform='Valor PayTech' and gateway='Unknown')then raise exception 'Valor conflation';end if;
 if (select count(*) from public.merchant_current where hardware='Verifone')<>4 then raise exception 'terminal records lost';end if;
