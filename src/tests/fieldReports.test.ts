@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { fieldReports as rows } from "../data/fieldReports";
 import { distribution, validateMerchant, csv } from "../lib/research";
 describe("NYC field report expansion", () => {
-  it("retains eleven unique, undated, real branch-specific records", () => {
-    expect(rows).toHaveLength(11);
-    expect(new Set(rows.map((m) => m.id)).size).toBe(11);
+  it("retains fifteen unique, undated, real branch-specific records", () => {
+    expect(rows).toHaveLength(15);
+    expect(new Set(rows.map((m) => m.id)).size).toBe(15);
     expect(
       rows.filter((m) => m.neighborhood === "Roosevelt Island"),
     ).toHaveLength(4);
@@ -14,7 +14,7 @@ describe("NYC field report expansion", () => {
     expect(rows.every((m) => validateMerchant(m) === null)).toBe(true);
   });
   it("keeps hardware brands and ambiguous payment platforms out of POS shares", () => {
-    expect(rows.filter((m) => m.hardware === "Verifone")).toHaveLength(2);
+    expect(rows.filter((m) => m.hardware === "Verifone")).toHaveLength(4);
     expect(rows.find((m) => m.hardware === "PAX S300")?.provider).toBe(
       "Unknown",
     );
@@ -25,7 +25,7 @@ describe("NYC field report expansion", () => {
       gateway: "Unknown",
     });
     const dist = distribution(rows, "provider");
-    expect(dist.find((d) => d.name === "Unknown")?.value).toBe(5);
+    expect(dist.find((d) => d.name === "Unknown")?.value).toBe(7);
     expect(dist.find((d) => d.name === "Square")?.value).toBe(3);
     expect(dist.find((d) => d.name === "Toast")?.value).toBe(2);
     expect(dist.find((d) => d.name === "Clover")?.value).toBe(1);

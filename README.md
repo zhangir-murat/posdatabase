@@ -19,7 +19,7 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The opening **Field reports** dataset contains 11 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, and Dutch Kills in Queens. The original two reports remain:
+The opening **Field reports** dataset contains 15 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, Times Square, and Dutch Kills in Queens. The original two reports remain:
 
 | Merchant | POS software | Terminal hardware | Payment gateway |
 |---|---|---|---|
@@ -39,14 +39,20 @@ Additional observations:
 | bb.q Chicken — Rose Hill | Toast | Unknown | Unknown |
 | Foodtown — Roosevelt Island | Unknown | Verifone | Unknown |
 | Il Miglio Brick Oven Pizza — Dutch Kills | Square | Unknown | Unknown |
+| Peng’s Noodle Folk — 1016 Lexington Avenue | Unknown | PAX S300 | Unknown |
+| Village Square Pizza — Upper East Side | Lightspeed | Verifone | Unknown |
+| Stüssy — SoHo | Shopify POS | Unknown | Unknown |
+| Charles Tyrwhitt — Times Square | Unknown | Verifone | Adyen |
 
-Gentile’s Nolita branch was explicitly confirmed by the researcher. LaVista was described as UES and matched to its business-listed East Side location at 1099 2nd Avenue (grouped under Sutton Place). Valor PayTech remains a reported platform brand: the exact hardware, gateway product, and POS software are unresolved. No chain-wide claims are made. Provider analytics remain POS-specific and retain the five unknown POS records in their denominator. Hardware/platform information is visible in a separate table column and record details; CSV exports preserve it.
+The researcher reconfirmed La Cabra SoHo as Square; its existing location was retained without duplication. Peng’s 1016 Lexington Avenue branch was explicitly confirmed. Adyen is recorded as a payment platform/processor brand, not POS software.
+
+Gentile’s Nolita branch was explicitly confirmed by the researcher. LaVista was described as UES and matched to its business-listed East Side location at 1099 2nd Avenue (grouped under Sutton Place). Valor PayTech remains a reported platform brand: the exact hardware, gateway product, and POS software are unresolved. No chain-wide claims are made. Provider analytics remain POS-specific and retain the seven unknown POS records in their denominator. Hardware/platform information is visible in a separate table column and record details; CSV exports preserve it.
 
 Observation dates were not supplied and remain blank (SQL NULL), never substituted with the report-entry date. Café@Cornell's POS status is Unverified because neither hardware nor gateway identifies its POS software. Wholesome's Clover entry is recorded as a researcher-reported identification; no terminal model is inferred.
 
 Business addresses were checked against primary business sources or official directories. WGS 84 coordinates came from NYC Planning GeoSearch's address points (per-record nycpad IDs recorded in notes; confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
 
-All 11 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 11 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the nine additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+All 15 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 15 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the thirteen additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
 
 The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 
