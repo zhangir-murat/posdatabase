@@ -19,7 +19,7 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The opening **Field reports** dataset contains 10 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo and Rose Hill. The original two reports remain:
+The opening **Field reports** dataset contains 11 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, and Dutch Kills in Queens. The original two reports remain:
 
 | Merchant | POS software | Terminal hardware | Payment gateway |
 |---|---|---|---|
@@ -38,6 +38,7 @@ Additional observations:
 | LaVista Pizza — 2nd Avenue | Unknown | Unknown | Valor PayTech |
 | bb.q Chicken — Rose Hill | Toast | Unknown | Unknown |
 | Foodtown — Roosevelt Island | Unknown | Verifone | Unknown |
+| Il Miglio Brick Oven Pizza — Dutch Kills | Square | Unknown | Unknown |
 
 Gentile’s Nolita branch was explicitly confirmed by the researcher. LaVista was described as UES and matched to its business-listed East Side location at 1099 2nd Avenue (grouped under Sutton Place). Valor PayTech remains a reported platform brand: the exact hardware, gateway product, and POS software are unresolved. No chain-wide claims are made. Provider analytics remain POS-specific and retain the five unknown POS records in their denominator. Hardware/platform information is visible in a separate table column and record details; CSV exports preserve it.
 
@@ -45,7 +46,7 @@ Observation dates were not supplied and remain blank (SQL NULL), never substitut
 
 Business addresses were checked against primary business sources or official directories. WGS 84 coordinates came from NYC Planning GeoSearch's address points (per-record nycpad IDs recorded in notes; confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
 
-All 10 opening records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 10 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the eight additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+All 11 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 11 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the nine additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
 
 The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 

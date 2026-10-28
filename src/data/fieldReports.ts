@@ -194,6 +194,29 @@ const additionalReports = [
     notes:
       "Researcher reported: foodtown roosevelt island - verifone. Verifone identifies terminal hardware; terminal model and POS software were not supplied. Observation date was not supplied. Address source: https://www.fda.gov/media/153997/download. Coordinates: NYC Planning GeoSearch nycpad 181548, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout.",
   },
+{
+    "city": "New York",
+    "borough": "Queens",
+    "neighborhood": "Dutch Kills",
+    "zip_code": "11106",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "NYC-011",
+    "business_name": "Il Miglio Brick Oven Pizza — Dutch Kills",
+    "street_address": "11-03 36th Avenue",
+    "latitude": 40.761156,
+    "longitude": -73.939647,
+    "category": "Restaurant",
+    "provider": "Square",
+    "hardware": "Unknown",
+    "payment_platform": "Unknown",
+    "gateway": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: il moglio brick oven pizza in dutch kills - square. Name normalized to Il Miglio using the business website. Square is the researcher-reported POS provider for this location only. Terminal model, separate gateway, payment processor and observation date were not supplied. Address source: https://ilmigliomenu.com/. Coordinates: NYC Planning GeoSearch nycpad 1816666, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,
