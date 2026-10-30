@@ -332,6 +332,29 @@ const additionalReports = [
     "verification_status": "Verified",
     "notes": "Researcher reported: hana gelateria - chowbus. Chowbus is recorded as the researcher-reported POS provider; no inference is made from online ordering or delivery listings. Terminal hardware, gateway, payment processor and observation date were not supplied. Address corroborated by https://www.theinfatuation.com/new-york/reviews/hana-gelateria and https://www.ubereats.com/store/hana-gelateria/cqq2l0MJVkWriy4PdxUFFQ. Coordinates: NYC Planning GeoSearch nycpad 1829581, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
 },
+{
+    "city": "New York",
+    "borough": "Manhattan",
+    "neighborhood": "Midtown West",
+    "zip_code": "10019",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "NYC-017",
+    "business_name": "Kin Ramen — West 56th Street",
+    "street_address": "129 West 56th Street",
+    "latitude": 40.764441,
+    "longitude": -73.978983,
+    "category": "Restaurant",
+    "provider": "Toast",
+    "hardware": "Unknown",
+    "payment_platform": "Unknown",
+    "gateway": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: Kin ramen 57 street toast. Toast is recorded as the researcher-reported POS provider. The researcher described 57th Street; Kin Ramen’s official site lists the nearby location at 129 West 56th Street, which is used for the address and map. Terminal hardware, gateway, payment processor and observation date were not supplied. Address source: https://kinramen.com/. Coordinates: NYC Planning GeoSearch nycpad 113333, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,

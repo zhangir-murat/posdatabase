@@ -19,7 +19,7 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The opening **Field reports** dataset contains 16 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, Times Square, and Dutch Kills and Long Island City in Queens. The original two reports remain:
+The opening **Field reports** dataset contains 17 real merchant reports supplied by the researcher. Four are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, Midtown West, Times Square, and Dutch Kills and Long Island City in Queens. The original two reports remain:
 
 | Merchant | POS software | Terminal hardware | Payment gateway |
 |---|---|---|---|
@@ -44,6 +44,7 @@ Additional observations:
 | Stüssy — SoHo | Shopify POS | Unknown | Unknown |
 | Charles Tyrwhitt — Times Square | Unknown | Verifone | Adyen |
 | Hana Gelateria — Long Island City | Chowbus | Unknown | Unknown |
+| Kin Ramen — West 56th Street | Toast | Unknown | Unknown |
 
 The researcher reconfirmed La Cabra SoHo as Square; its existing location was retained without duplication. Peng’s 1016 Lexington Avenue branch was explicitly confirmed. Adyen is recorded as a payment platform/processor brand, not POS software.
 
@@ -53,7 +54,7 @@ Observation dates were not supplied and remain blank (SQL NULL), never substitut
 
 Business addresses were checked against primary business sources or official directories. WGS 84 coordinates came from NYC Planning GeoSearch's address points (per-record nycpad IDs recorded in notes; confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
 
-All 16 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 16 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the fourteen additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+All 17 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 17 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the fifteen additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
 
 The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 
