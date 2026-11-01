@@ -56,6 +56,7 @@ export const providers = [
   "Shopify POS",
   "Lightspeed",
   "Chowbus",
+  "MenuSifu",
   "Other",
   "Unknown",
 ];
@@ -83,6 +84,7 @@ export const colors: Record<string, string> = {
   "Shopify POS": "#8d80b1",
   Lightspeed: "#568fa5",
   Chowbus: "#6b9695",
+  MenuSifu: "#a87657",
   Other: "#c78185",
   Unknown: "#9b9d97",
 };

@@ -2,12 +2,12 @@ import { describe, it, expect } from "vitest";
 import { fieldReports as rows } from "../data/fieldReports";
 import { distribution, validateMerchant, csv } from "../lib/research";
 describe("NYC field report expansion", () => {
-  it("retains seventeen unique, undated, real branch-specific records", () => {
-    expect(rows).toHaveLength(17);
-    expect(new Set(rows.map((m) => m.id)).size).toBe(17);
+  it("retains eighteen unique, undated, real branch-specific records", () => {
+    expect(rows).toHaveLength(18);
+    expect(new Set(rows.map((m) => m.id)).size).toBe(18);
     expect(
       rows.filter((m) => m.neighborhood === "Roosevelt Island"),
-    ).toHaveLength(4);
+    ).toHaveLength(5);
     expect(rows.every((m) => !m.is_demo && m.observation_date === "")).toBe(
       true,
     );

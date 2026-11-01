@@ -355,6 +355,29 @@ const additionalReports = [
     "verification_status": "Verified",
     "notes": "Researcher reported: Kin ramen 57 street toast. Toast is recorded as the researcher-reported POS provider. The researcher described 57th Street; Kin Ramen’s official site lists the nearby location at 129 West 56th Street, which is used for the address and map. Terminal hardware, gateway, payment processor and observation date were not supplied. Address source: https://kinramen.com/. Coordinates: NYC Planning GeoSearch nycpad 113333, confidence 0.8, fallback match. Approximate address/building point, not a field-verified entrance or checkout."
 },
+{
+    "city": "New York",
+    "borough": "Manhattan",
+    "neighborhood": "Roosevelt Island",
+    "zip_code": "10044",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "RI-005",
+    "business_name": "Fuji East Japanese Bistro — Roosevelt Island",
+    "street_address": "455 Main Street, Store #3A",
+    "latitude": 40.759268,
+    "longitude": -73.952623,
+    "category": "Restaurant",
+    "provider": "MenuSifu",
+    "hardware": "Unknown",
+    "payment_platform": "Unknown",
+    "gateway": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: Fuji east Roos island - menusifu. MenuSifu is recorded as the researcher-reported POS provider. Terminal hardware, gateway, payment processor and observation date were not supplied. Official address source: https://www.fujieast.com/ lists 455 Main Street, Store #3A, Roosevelt Island, NY 10044. Coordinates reuse the existing NYC Planning GeoSearch address point for 455 Main Street (nycpad 181933, confidence 0.8, fallback match). This is an approximate shared building location, not a field-verified entrance or checkout."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,
