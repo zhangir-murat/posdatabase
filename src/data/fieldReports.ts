@@ -424,6 +424,29 @@ const additionalReports = [
     "category": "Bar & nightlife",
     "notes": "Researcher reported: the Spaniard toast. Toast is the researcher-reported POS provider for this location. Terminal hardware, gateway, payment processor and observation date were not supplied. Address source: https://www.thespaniardnyc.com/info/. Coordinates: NYC Planning GeoSearch nycpad 57455, confidence 0.8, fallback match. Approximate building point, not a field-verified entrance or checkout."
 },
+{
+    "city": "New York",
+    "borough": "Manhattan",
+    "neighborhood": "West Village",
+    "zip_code": "10012",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "NYC-021",
+    "business_name": "Artichoke Basille’s Pizza — MacDougal Street",
+    "street_address": "111 MacDougal Street",
+    "latitude": 40.730001,
+    "longitude": -74.000745,
+    "category": "Restaurant",
+    "provider": "Toast",
+    "hardware": "Unknown",
+    "payment_platform": "Unknown",
+    "gateway": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: Artichoke pizza west village toast. Toast is recorded as the researcher-reported POS provider for this branch only. West Village is retained as the researcher’s neighborhood label; the official business site calls its 111 MacDougal Street location Greenwich Village. Terminal hardware, gateway, payment processor and observation date were not supplied. Address source: https://www.artichokepizza.com/location/artichoke-basille-pizza-greenwich-village/. Coordinates: NYC Planning GeoSearch nycpad 51198, confidence 0.8, fallback match. Approximate building/address point, not a field-verified entrance or checkout."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,
