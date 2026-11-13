@@ -19,7 +19,7 @@ Use a Supabase **publishable** key. Never use a secret/service-role key in VITE_
 
 ## Dataset provenance
 
-The opening **Field reports** dataset contains 23 real merchant reports supplied by the researcher. Five are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, Midtown West, Times Square, West Village, East Harlem, and Dutch Kills and Long Island City in Queens. The original two reports remain:
+The opening **Field reports** dataset contains 24 real merchant reports supplied by the researcher. Five are on Roosevelt Island; the rest cover Sutton Place, the Upper East Side, Nolita, SoHo, Rose Hill, Midtown West, Times Square, West Village, East Harlem, the Upper West Side, and Dutch Kills and Long Island City in Queens. The original two reports remain:
 
 | Merchant | POS software | Terminal hardware | Payment gateway |
 |---|---|---|---|
@@ -51,6 +51,7 @@ Additional observations:
 | Artichoke Basille’s Pizza — 111 MacDougal Street | Toast | Unknown | Unknown |
 | Dell’Aria — East Harlem | Toast | Unknown | Unknown |
 | Ramen Momoko — West 56th Street | Yammii | Unknown | Unknown |
+| Fujiissa — Hashi Market, 2780 Broadway | Chowbus | Unknown | Unknown |
 
 Moustache’s notes retain researcher-relayed staff feedback about QR-code bill splitting: guests pay half of the bill and leave. The settlement of the remainder and frequency were not established.
 
@@ -64,7 +65,7 @@ Observation dates were not supplied and remain blank (SQL NULL), never substitut
 
 Business addresses were checked against primary business sources or official directories. WGS 84 coordinates came from NYC Planning GeoSearch's address points (per-record nycpad IDs recorded in notes; confidence 0.8, fallback matches). They are approximate building/address locations, not surveyed checkout or entrance positions. Sources and uncertainty are retained in each record's notes.
 
-All 23 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 23 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the twenty-one additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
+All 24 field-report records are a read-only reference dataset bundled with the app (`src/data/fieldReports.ts`). Select **Sign in to save to my database**, or **Save to my database** when signed in, to import all 24 atomically into your private Supabase dataset using `import_field_reports()`. Existing users who saved the first two can import the twenty-two additions without duplicating or replacing those rows. The original `import_roosevelt_island()` remains available for compatibility. The import is idempotent by owner/name/address/ZIP, preserves any existing matching records, generates normal merchant UUIDs, and uses the same secured save RPC. No permanent account was fabricated to own the records.
 
 The separate **Illustrative dataset** still contains 24 synthetic examples in `src/data/demo.ts`; they are not firsthand findings and are not included in the real dataset. CSV exports identify illustrative rows with `is_demo=true`.
 

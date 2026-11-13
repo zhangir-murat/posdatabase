@@ -493,6 +493,29 @@ const additionalReports = [
     "provider": "Yammii",
     "notes": "Researcher reported: ramen momoko - yammi. Provider spelling normalized to Yammii using https://www.yammiipos.com/faq. This is the researcher-reported in-store POS identification; no particular hardware or processor is inferred from the vendor’s supported integrations. Terminal hardware, gateway, payment processor and observation date were not supplied. Address corroborated by https://www.snapchat.com/place/ramenmomoko/68815f42-93ba-11ed-9813-03090f6c66c6 and https://localchinesefoods.net/c/ramen/new-york/new-york. Coordinates: NYC Planning GeoSearch nycpad 164801, confidence 0.8, fallback match. Approximate building/address point, not a field-verified entrance or checkout."
 },
+{
+    "city": "New York",
+    "borough": "Manhattan",
+    "neighborhood": "Upper West Side",
+    "zip_code": "10025",
+    "observation_date": "",
+    "evidence_method": "Researcher-reported field observation",
+    "is_demo": false,
+    "is_seed": true,
+    "observation_count": 1,
+    "id": "NYC-024",
+    "business_name": "Fujiissa — Hashi Market Upper West Side",
+    "street_address": "2780 Broadway",
+    "latitude": 40.802248,
+    "longitude": -73.96742,
+    "category": "Café & bakery",
+    "provider": "Chowbus",
+    "hardware": "Unknown",
+    "gateway": "Unknown",
+    "payment_platform": "Unknown",
+    "verification_status": "Verified",
+    "notes": "Researcher reported: fujisa near columbia u - chowbus; subsequently confirmed the Fujiissa counter inside Hashi Market at 2780 Broadway between West 107th and 108th Streets. Name normalized to Fujiissa. Chowbus is the researcher-reported POS provider for this counter only; no claim is made about the surrounding supermarket or other branches. Terminal hardware, gateway, payment processor and observation date were not supplied. Address source: https://www.hashimarket.com/. Coordinates: NYC Planning GeoSearch nycpad 262213, confidence 0.8, fallback match. Approximate shared building/address point, not a field-verified counter or entrance."
+},
 ] satisfies Merchant[];
 export const fieldReports: Merchant[] = [
   ...rooseveltIslandMerchants,
