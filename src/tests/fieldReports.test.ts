@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { fieldReports as rows } from "../data/fieldReports";
 import { distribution, validateMerchant, csv } from "../lib/research";
 describe("NYC field report expansion", () => {
-  it("retains twenty-nine unique, undated, real branch-specific records", () => {
-    expect(rows).toHaveLength(29);
-    expect(new Set(rows.map((m) => m.id)).size).toBe(29);
+  it("retains thirty-one unique, undated, real branch-specific records", () => {
+    expect(rows).toHaveLength(31);
+    expect(new Set(rows.map((m) => m.id)).size).toBe(31);
     expect(
       rows.filter((m) => m.neighborhood === "Roosevelt Island"),
     ).toHaveLength(5);
@@ -26,7 +26,7 @@ describe("NYC field report expansion", () => {
     });
     const dist = distribution(rows, "provider");
     expect(dist.find((d) => d.name === "Unknown")?.value).toBe(7);
-    expect(dist.find((d) => d.name === "Square")?.value).toBe(5);
+    expect(dist.find((d) => d.name === "Square")?.value).toBe(7);
     expect(dist.find((d) => d.name === "Toast")?.value).toBe(10);
     expect(dist.find((d) => d.name === "Clover")?.value).toBe(1);
   });
